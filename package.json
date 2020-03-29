@@ -1,0 +1,23 @@
+{
+  "name": "lru-cache",
+  "version": "1.0.0",
+  "description": "least recently used image cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SungBaek/cache.git"
+  },
+  "author": "joon812@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SungBaek/cache/issues"
+  },
+  "homepage": "https://github.com/SungBaek/cache#readme",
+  "dependencies": {
+    "linked-list": "^2.1.0",
+    "sync-request": "^6.1.0"
+  }
+}
