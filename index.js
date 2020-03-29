@@ -21,7 +21,7 @@ const fileParser = new FileParser();
 
 fileParser.readFile(process.argv[2])
   .on('done', (parsedFile) => {
-  	console.log("lru cache size" + parsedFile.maxSize);
+  	console.log("Initialized lru cache with size: " + parsedFile.maxSize);
   	const lru = new LRU(parsedFile.maxSize);
   	for (let i = 0; i < parsedFile.imageList.length; i++) {
   	  lru.fetchFile(parsedFile.imageList[i]);

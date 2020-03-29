@@ -44,7 +44,6 @@ class FileParser extends EventEmitter {
       }
     })
     .on('close', () => {
-      console.log("read all the files sir");
       this.emit('done', returnObject);
     });
     return this;//for chaining.
