@@ -1,7 +1,11 @@
-<h1>LRU image cache</h1>
+<h1>LRU file cache</h1>
 
+<p>
 To run the lru,
-1) run "npm install" to install all the dependencies
-2) run "node index.js <filePath>" to initiative the image fetching process.
-
+<ol>
+<li>run "npm install" to install all the dependencies</li>
+<li>run "npm start <filePath>" to initiative the file fetching process.</li>
+</ol>
+Thank you
+</p>
 

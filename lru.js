@@ -1,7 +1,12 @@
 const LinkedList = require('linked-list');
 const request = require('sync-request');
 
-class LRU {
+/**
+ * File fetcher that will retrieve a file specified by the url.
+ * It has an internal cache (LRU scheme) with max capacity of maxCacheSize.
+ */
+class FileFetcherWithCache {
+
   constructor(maxCacheSize) {
   	this.maxCacheSize = maxCacheSize;
   	this.fileLinkedList = new LinkedList();
@@ -9,21 +14,30 @@ class LRU {
   	this.currentCacheSize = 0;
   }
 
-  containsFile(fileUrl) {
-  	return this.fileMap.has(fileUrl);
-  }
-
-  fetchFile(fileUrl) {
-  	if (this.fileMap.has(fileUrl)) {
+  /**
+   * Fetch the file specified by fileUrl.
+   * If the file is in the internal LRU cache.
+   * @param fileUrl - string of the file url
+   * @param ignoreCache - boolean param if set to true, will ignore the cache.
+   *                      useful if data consistency is utmost importance.
+   */
+  fetchFile(fileUrl, ignoreCache) {
+  	if (this.fileMap.has(fileUrl) && !ignoreCache) {
   	  const fileListItem = this.fileMap.get(fileUrl);
   	  fileListItem.detach();
   	  this.fileLinkedList.append(fileListItem);
   	  console.log(`${fileUrl} CACHE ${fileListItem.value}`);
   	}
-  	//add to the map
   	else {
-  	  const fileResponse = request('GET', encodeURI(fileUrl));
-  	  const fileSize = fileResponse.headers['content-length'];
+  	  let fileResponse;
+	  try {
+  	    fileResponse = request('GET', encodeURI(fileUrl));
+  	  }
+  	  catch (error) {
+  	  	console.error(`Could not visit URL : "${fileUrl}"`);
+  	  	return;
+  	  }
+  	  const fileSize = parseInt(fileResponse.headers['content-length'], 10);
   	  const cacheItem = new LRUItem(fileUrl, fileSize);
   	  this.fileMap.set(fileUrl, cacheItem);
   	  this.fileLinkedList.append(cacheItem);
@@ -50,4 +64,4 @@ class LRUItem extends LinkedList.Item{
   }
 }
 
-module.exports = LRU;
+module.exports = FileFetcherWithCache;
